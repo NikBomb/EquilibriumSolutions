@@ -4,11 +4,13 @@
 cmake_minimum_required (VERSION 3.8)
 
 
-add_library(Utilities 
-   src/bisection.cpp
+add_library(Utilities
    include/gases.hpp
    include/idealSolutions.hpp
-   include/nonIdealSolutions.hpp)
+   include/nonIdealSolutions.hpp
+   src/bisection.cpp
+   src/poly34.cpp
+   src/eos.cpp)
 
 
 target_include_directories(Utilities PUBLIC

@@ -8,6 +8,9 @@ class Gas {
 protected:
 	double Tb;
 	double b;
+	double Tc;
+	double omega;
+	double pc;
 
 public:
 	 double kEq(double p, double T) {
@@ -24,6 +27,18 @@ public:
 
 	 double F(double T) {
 		 return b* (1 / Tb - 1 / T);
+	 }
+
+	 double getPc() {
+		 return pc;
+	 }
+
+	 double getOmega() {
+		 return omega;
+	 }
+
+	 double getTc() {
+		 return Tc;
 	 }
 };
 
@@ -62,5 +77,14 @@ public:
 	C1() {
 		b = 300;
 		Tb = 96.8;
+	}
+};
+
+class IsoC4 : public Gas {
+public:
+	IsoC4() {
+		Tc = 274.46 + 459.67;
+		pc = 527.9;
+		omega = 0.1852;
 	}
 };

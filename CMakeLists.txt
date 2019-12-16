@@ -8,4 +8,5 @@ add_subdirectory("Utilities")
 add_subdirectory("Ideal Solutions")
 add_subdirectory("Non Ideal Solutions")
 add_subdirectory("Differential Vaporization")
+add_subdirectory("Fugacity Pure Substances")
 
