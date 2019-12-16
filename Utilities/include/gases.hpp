@@ -3,6 +3,12 @@
 #include <vector>
 #include <math.h>
 #include <stdio.h>
+#include <unordered_map>
+#include <typeindex>
+#include <typeinfo>
+#include <utility>
+#include <functional>
+
 
 class Gas {
 protected:
@@ -40,6 +46,8 @@ public:
 	 double getTc() {
 		 return Tc;
 	 }
+
+	 virtual double getID() = 0;
 };
 
 class C3 : public Gas {
@@ -50,6 +58,9 @@ public:
 		Tb = 420;
 	}
 
+	double getID() override {
+		return 1;
+	};
 };
 
 class nC4 : public Gas {
@@ -58,7 +69,16 @@ public:
 	nC4() {
 		b = 2293;
 		Tb = 491;
+		Tc = 765.3;
+		pc = 550.6;
+		omega = 0.1995;
 	}
+	
+	double getID() override {
+		return 2; 
+	};
+
+
 };
 
 class nC5 : public Gas {
@@ -68,7 +88,9 @@ public:
 		b = 2750;
 		Tb = 557;
 	}
-
+	double getID() override {
+		return 3;
+	};
 	
 };
 
@@ -77,7 +99,13 @@ public:
 	C1() {
 		b = 300;
 		Tb = 96.8;
+		Tc = 343.0;
+		pc = 666.4;
+		omega = 0.0104;
 	}
+	double getID() override {
+		return 4;
+	};
 };
 
 class IsoC4 : public Gas {
@@ -86,5 +114,66 @@ public:
 		Tc = 274.46 + 459.67;
 		pc = 527.9;
 		omega = 0.1852;
+	}
+	double getID() override {
+		return 5;
+	};
+};
+
+class nC10 : public Gas {
+
+public:
+	nC10() {
+		b = 3828;
+		Tb = 805;
+		Tc = 1111.7;
+		pc = 305.2;
+		omega = 0.4898;
+	}
+
+	double getID() override {
+		return 6;
+	};
+};
+
+
+struct GasMixtures {
+
+	struct pair_hash
+	{
+		template <class T1, class T2>
+		std::size_t operator() (const std::pair<T1, T2>& pair) const
+		{
+			return std::hash<T1>()(pair.first) ^ std::hash<T2>()(pair.second);
+		}
+	};
+	typedef std::pair< std::type_index, std::type_index> pair;
+	const std::unordered_map<pair, double, pair_hash> interactions{
+		{ {std::type_index(typeid(C1)),std::type_index(typeid(nC4))}, 0.02 },
+		{ {std::type_index(typeid(nC4)),std::type_index(typeid(C1))}, 0.02 },
+		{ {std::type_index(typeid(C1)),std::type_index(typeid(nC10))}, 0.04 },
+		{ {std::type_index(typeid(nC10)),std::type_index(typeid(C1))}, 0.04 },
+		{ {std::type_index(typeid(nC4)),std::type_index(typeid(nC10))}, 0.00 },
+		{ {std::type_index(typeid(nC10)),std::type_index(typeid(nC4))}, 0.00 },
+		{ {std::type_index(typeid(C1)),std::type_index(typeid(C1))}, 0.00 },
+		{ {std::type_index(typeid(nC4)),std::type_index(typeid(nC4))}, 0.00 },
+		{ {std::type_index(typeid(nC10)),std::type_index(typeid(nC10))}, 0.00 },
+	};
+
+public:
+	std::vector<Gas*> gases;
+	std::vector<double> comp;
+	
+	
+	GasMixtures(std::vector<Gas*>& g, std::vector<double>& c ) {
+		
+		gases = g;
+		comp = c;
+	};
+
+	
+	double getBinaryInteraction( Gas* g1, Gas* g2) {
+		auto p = std::make_pair(std::type_index(typeid(*g1)), std::type_index(typeid(*g2)));
+		return interactions.at(p);
 	}
 };

@@ -9,4 +9,5 @@ add_subdirectory("Ideal Solutions")
 add_subdirectory("Non Ideal Solutions")
 add_subdirectory("Differential Vaporization")
 add_subdirectory("Fugacity Pure Substances")
+add_subdirectory("Mixture Equilibrium EOS")
 
