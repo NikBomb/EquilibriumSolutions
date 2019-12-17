@@ -6,8 +6,7 @@ double bisection(double a, double b, std::function<double(double)> fct)
 	double c;
 	if (fct(a) * fct(b) >= 0)
 	{
-		printf("Incorrect a and b");
-		return 0;
+		return 1;  // Small hack to return the correct number of moles if above or below bpp
 	}
 
 	c = a;

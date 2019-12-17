@@ -29,7 +29,7 @@ int main() {
 
 	double n = 1.0; /*Initial number of moles*/
 	double initialbpp = bubblePointPressure(z, gases, T);
-	double p  = bubblePointPressure(z, gases, T) - pIncr ;
+	double p = bubblePointPressure(z, gases, T) - pIncr;
 	double dN = 0;
 	std::vector<double> gasMoles(z.size());
 	std::vector<double> newComposition(z.size());
@@ -39,25 +39,25 @@ int main() {
 		nLiquidMoles[i] = z[i] * n;
 	}
 
-	while( p > pFin ) {
+	while (p > pFin) {
 		for (auto i = 0; i < z.size(); i++) {
-			k[i] = gases[i] -> kEq(p, T);
+			k[i] = gases[i]->kEq(p, T);
 		}
-		
+
 		std::function<double(double)> bindGasComp = [&z, &k, &p](double nl) { auto gComp = gasComposition(z, k, p, nl);
 		return std::accumulate(gComp.begin(), gComp.end(), 0.0) - 1.0;; };
 
 
-		
+
 		auto nLBar = (bisection(0.01, 1, bindGasComp));
 		auto nL = nLBar * n;
 		auto nG = (1 - nLBar) * n;
 		n -= nG;
 		auto gComp = gasComposition(z, k, p, nLBar);
 		newComposition = liquidComposition(z, k, p, 1 - nLBar);
-		
+
 		z = newComposition;
-		auto p2 = bubblePointPressure(z, gases, T); 
-		p = p2 - pIncr;
+		auto p2 = bubblePointPressure(z, gases, T);
+		p -= pIncr;
 	}
 }

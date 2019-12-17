@@ -56,6 +56,9 @@ public:
 	C3() {
 		b = 1888;
 		Tb = 420;
+		pc = 616;
+		omega = 0.1522;
+		Tc = 206.06 + 459.67;
 	}
 
 	double getID() override {
@@ -87,6 +90,9 @@ public:
 	nC5() {
 		b = 2750;
 		Tb = 557;
+		pc = 488.6;
+		omega = 0.2514;
+		Tc = 385.8 + 459.67;
 	}
 	double getID() override {
 		return 3;
@@ -114,6 +120,8 @@ public:
 		Tc = 274.46 + 459.67;
 		pc = 527.9;
 		omega = 0.1852;
+		b = 2037;
+		Tb = 471;
 	}
 	double getID() override {
 		return 5;
@@ -150,6 +158,14 @@ struct GasMixtures {
 	typedef std::pair< std::type_index, std::type_index> pair;
 	const std::unordered_map<pair, double, pair_hash> interactions{
 		{ {std::type_index(typeid(C1)),std::type_index(typeid(nC4))}, 0.02 },
+		{ {std::type_index(typeid(C1)),std::type_index(typeid(C3))}, 0.001 },
+		{ {std::type_index(typeid(C1)),std::type_index(typeid(nC5))}, 0.02 },
+		{ {std::type_index(typeid(nC5)),std::type_index(typeid(C1))}, 0.02 },
+		{ {std::type_index(typeid(C3)),std::type_index(typeid(C1))}, 0.00 },
+		{ {std::type_index(typeid(C3)),std::type_index(typeid(C3))}, 0.00 },
+		{ {std::type_index(typeid(C3)),std::type_index(typeid(nC5))}, 0.01 },
+		{ {std::type_index(typeid(nC5)),std::type_index(typeid(C3))}, 0.00 },
+		{ {std::type_index(typeid(nC5)),std::type_index(typeid(nC5))}, 0.00 },
 		{ {std::type_index(typeid(nC4)),std::type_index(typeid(C1))}, 0.02 },
 		{ {std::type_index(typeid(C1)),std::type_index(typeid(nC10))}, 0.04 },
 		{ {std::type_index(typeid(nC10)),std::type_index(typeid(C1))}, 0.04 },
@@ -158,6 +174,8 @@ struct GasMixtures {
 		{ {std::type_index(typeid(C1)),std::type_index(typeid(C1))}, 0.00 },
 		{ {std::type_index(typeid(nC4)),std::type_index(typeid(nC4))}, 0.00 },
 		{ {std::type_index(typeid(nC10)),std::type_index(typeid(nC10))}, 0.00 },
+		{ {std::type_index(typeid(IsoC4)),std::type_index(typeid(IsoC4))}, 0.00 },
+
 	};
 
 public:

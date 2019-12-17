@@ -4,7 +4,7 @@
 #include "eos.hpp" 
 
 
-/*Example 15.1  -> Non ideal solutions using K factor*/
+/*Example 15.4  -> Non ideal solutions using K factor*/
 
 int main() {
   
@@ -14,6 +14,6 @@ int main() {
 	std::vector<Gas*> g{ &c1, &c4, &c10 };
 	std::vector<double> c{ 0.5301, 0.1055, 0.3644 };
 	GasMixtures gm(g, c);
-	Equilibrium q = PengRonbinson(gm, 160 + 459.67, 1000);
-	
+	MixtureEquilibrium q = PengRonbinson(gm, 160 + 459.67, 1000);
+
 };
